@@ -35,6 +35,32 @@ document.addEventListener("DOMContentLoaded", () => {
         option.textContent = name;
         activitySelect.appendChild(option);
       });
+
+      // Loop through activities and create cards with participants list
+      for (const [activityName, activityDetails] of Object.entries(activities)) {
+        const card = document.createElement("div");
+        card.className = "activity-card";
+
+        // Add activity details
+        card.innerHTML = `
+          <h4>${activityName}</h4>
+          <p><strong>Description:</strong> ${activityDetails.description}</p>
+          <p><strong>Schedule:</strong> ${activityDetails.schedule}</p>
+          <p><strong>Max Participants:</strong> ${activityDetails.max_participants}</p>
+          <p><strong>Participants:</strong></p>
+          <ul class="participants-list">
+            ${
+              activityDetails.participants.length > 0
+                ? activityDetails.participants
+                    .map((participant) => `<li>${participant}</li>`)
+                    .join("")
+                : "<li>No participants yet</li>"
+            }
+          </ul>
+        `;
+
+        activitiesList.appendChild(card);
+      }
     } catch (error) {
       activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
       console.error("Error fetching activities:", error);
